@@ -167,6 +167,23 @@ export const wikiTreeData: TreeNode = {
   ],
 }
 
+/** 将递归 Tree 数据扁平化为 markmap 可消费的 Markdown 列表 */
+export function treeToMarkdown(root: TreeNode): string {
+  const lines: string[] = [`# ${root.label}`, '']
+  const walk = (n: TreeNode, depth: number) => {
+    lines.push(`${'  '.repeat(depth - 1)}- ${n.label}`)
+    if (n.children) {
+      for (const c of n.children) walk(c, depth + 1)
+    }
+  }
+  if (root.children) {
+    for (const c of root.children) walk(c, 1)
+  }
+  return lines.join('\n')
+}
+
+export const wikiMarkdown = treeToMarkdown(wikiTreeData)
+
 export type WikiBranch = {
   id: string
   label: string
