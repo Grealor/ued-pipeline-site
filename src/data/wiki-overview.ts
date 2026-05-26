@@ -2,90 +2,170 @@
  * UED 设计中心 · 全景脑图数据
  * 覆盖：组织架构 × C 端业务 × B 端业务 × 品牌工程化 × 营销工程化 × 矩阵规范 × 跨类仲裁 × 路线 / 知识 / 工具
  *
- * 注意（Mermaid mindmap 语法）：
- *   - 缩进决定层级，同级节点缩进必须一致
- *   - 节点文字若重复会被合并为同一节点，本数据已去重
- *   - 避免使用裸 `-` / `:` 等特殊字符作为节点开头
+ * 渲染方式：手写递归 Tree（极简骨架风格）
+ *   - 每个节点只在「父 → 第一个子」之间画一条横向 hairline
+ *   - 其余兄弟节点靠列对齐自然成行，无 box / 无冗余竖线
  */
-export const wikiMindmap = `mindmap
-  root((UED 设计中心))
-    组织架构
-      C 端设计部
-      B 端设计部
-      品牌与营销设计部
-      设计工程化部
-    C 端业务矩阵
-      京东外卖
-      京东到家
-      京东特价
-      京东点评
-      京东金融
-      京东出行
-      京东健康
-    B 端业务矩阵
-      商家工作台
-      运营管理后台
-      内部协作工具
-      数据看板平台
-    品牌设计工程化
-      基础模型层
-        LoRA 训练
-        IP Adapter
-        Negative Prompt
-      规则层
-        品牌 DNA 编排
-      自动化层
-        ComfyUI Pipeline
-        LLM 语义翻译
-      交付层
-        Ultimate SD Upscale
-      里程碑 M1 至 M3
-        M1 原子建模
-        M2 规则封装
-        M3 全链路闭环
-      品牌双道防线
-        DNA 合规审核
-        印刷质量审核
-    营销设计工程化
-      资产处理层
-        SAM 抠图
-        IC-Light 重光照
-      矩阵延展层
-        Resizing Agent
-        Outpainting Engine
-      模板引擎层
-        Figma to Code
-      营销双道防线
-        视觉真伪审核
-        渠道转化审核
-    品牌矩阵心智规范 1.6
-      品牌定位
-      视觉表达
-      IP 与角色
-      主子品牌关系
-      场景体验地图
-      资产清单
-    规范权重决策表
-      品牌规范层
-      营销规范层
-      UI 规范层
-      仲裁原则 4 条
-      关键场景 7 个
-      规则维度 6 项
-    路线图
-      Q1 原子层
-      Q2 规则封装
-      Q3 全链路闭环
-      Q4 治理化
-    知识库
-      RAG 检索
-      Prompt 工程
-      模型卡片
-    工具链
-      ComfyUI 节点库
-      Figma 设计
-      Code Connect 映射
-`
+export type TreeNode = {
+  label: string
+  children?: TreeNode[]
+}
+
+export const wikiTreeData: TreeNode = {
+  label: 'UED 设计中心',
+  children: [
+    {
+      label: '组织架构',
+      children: [
+        { label: 'C 端设计部' },
+        { label: 'B 端设计部' },
+        { label: '品牌与营销设计部' },
+        { label: '设计工程化部' },
+      ],
+    },
+    {
+      label: 'C 端业务矩阵',
+      children: [
+        { label: '京东外卖' },
+        { label: '京东到家' },
+        { label: '京东特价' },
+        { label: '京东点评' },
+        { label: '京东金融' },
+        { label: '京东出行' },
+        { label: '京东健康' },
+      ],
+    },
+    {
+      label: 'B 端业务矩阵',
+      children: [
+        { label: '商家工作台' },
+        { label: '运营管理后台' },
+        { label: '内部协作工具' },
+        { label: '数据看板平台' },
+      ],
+    },
+    {
+      label: '品牌设计工程化',
+      children: [
+        {
+          label: '基础模型层',
+          children: [
+            { label: 'LoRA 训练' },
+            { label: 'IP Adapter' },
+            { label: 'Negative Prompt' },
+          ],
+        },
+        {
+          label: '规则层',
+          children: [{ label: '品牌 DNA 编排' }],
+        },
+        {
+          label: '自动化层',
+          children: [
+            { label: 'ComfyUI Pipeline' },
+            { label: 'LLM 语义翻译' },
+          ],
+        },
+        {
+          label: '交付层',
+          children: [{ label: 'Ultimate SD Upscale' }],
+        },
+        {
+          label: '里程碑',
+          children: [
+            { label: 'M1 原子建模' },
+            { label: 'M2 规则封装' },
+            { label: 'M3 全链路闭环' },
+          ],
+        },
+        {
+          label: '品牌双道防线',
+          children: [
+            { label: 'DNA 合规审核' },
+            { label: '印刷质量审核' },
+          ],
+        },
+      ],
+    },
+    {
+      label: '营销设计工程化',
+      children: [
+        {
+          label: '资产处理层',
+          children: [
+            { label: 'SAM 抠图' },
+            { label: 'IC-Light 重光照' },
+          ],
+        },
+        {
+          label: '矩阵延展层',
+          children: [
+            { label: 'Resizing Agent' },
+            { label: 'Outpainting Engine' },
+          ],
+        },
+        {
+          label: '模板引擎层',
+          children: [{ label: 'Figma to Code' }],
+        },
+        {
+          label: '营销双道防线',
+          children: [
+            { label: '视觉真伪审核' },
+            { label: '渠道转化审核' },
+          ],
+        },
+      ],
+    },
+    {
+      label: '品牌矩阵规范 1.6',
+      children: [
+        { label: '品牌定位' },
+        { label: '视觉表达' },
+        { label: 'IP 与角色' },
+        { label: '主子品牌关系' },
+        { label: '场景体验地图' },
+        { label: '资产清单' },
+      ],
+    },
+    {
+      label: '规范权重决策表',
+      children: [
+        { label: '品牌规范层' },
+        { label: '营销规范层' },
+        { label: 'UI 规范层' },
+        { label: '仲裁原则 4 条' },
+        { label: '关键场景 7 个' },
+        { label: '规则维度 6 项' },
+      ],
+    },
+    {
+      label: '路线图',
+      children: [
+        { label: 'Q1 原子层' },
+        { label: 'Q2 规则封装' },
+        { label: 'Q3 全链路闭环' },
+        { label: 'Q4 治理化' },
+      ],
+    },
+    {
+      label: '知识库',
+      children: [
+        { label: 'RAG 检索' },
+        { label: 'Prompt 工程' },
+        { label: '模型卡片' },
+      ],
+    },
+    {
+      label: '工具链',
+      children: [
+        { label: 'ComfyUI 节点库' },
+        { label: 'Figma 设计' },
+        { label: 'Code Connect 映射' },
+      ],
+    },
+  ],
+}
 
 export type WikiBranch = {
   id: string

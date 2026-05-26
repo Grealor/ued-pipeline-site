@@ -1,21 +1,19 @@
 import { MousePointer2, RotateCcw, ZoomIn, ZoomOut } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
-import { wikiMindmap } from '../data/wiki-overview'
-import { MermaidDiagram } from './MermaidDiagram'
+import { wikiTreeData, type TreeNode } from '../data/wiki-overview'
 
 export function WikiOverview() {
   return (
     <div className="relative overflow-hidden rounded-xl border border-hairline bg-canvas">
       <TransformWrapper
-        initialScale={0.9}
+        initialScale={1}
         minScale={0.3}
         maxScale={3}
         centerOnInit
         limitToBounds={false}
         doubleClick={{ mode: 'reset' }}
         wheel={{ step: 0.15 }}
-        panning={{ velocityDisabled: false }}
       >
         {({ zoomIn, zoomOut, resetTransform }) => (
           <>
@@ -40,16 +38,46 @@ export function WikiOverview() {
 
             {/* 主可交互画布 */}
             <TransformComponent
-              wrapperClass="!w-full !h-[75vh] !min-h-[560px] !bg-surface-soft"
-              contentClass="!flex !items-center !justify-center"
+              wrapperClass="!w-full !h-[78vh] !min-h-[600px] !bg-canvas"
+              contentClass="!flex !items-start !justify-start"
             >
-              <div className="px-8 py-6">
-                <MermaidDiagram chart={wikiMindmap} />
+              <div className="px-12 py-10">
+                <Branch data={wikiTreeData} />
               </div>
             </TransformComponent>
           </>
         )}
       </TransformWrapper>
+    </div>
+  )
+}
+
+/**
+ * Branch —— 极简骨架树
+ *   - 每个节点：[label] [若有子树则画一条横向 hairline] [子节点纵向 stack]
+ *   - 兄弟节点之间不画竖线，靠 X 列对齐成行
+ *   - 形态完全跟随贴的样张
+ */
+function Branch({ data }: { data: TreeNode }) {
+  const hasChildren = !!data.children?.length
+  return (
+    <div className="flex items-start">
+      <div className="shrink-0 whitespace-nowrap py-1 pr-1 text-[13px] leading-relaxed text-ink">
+        {data.label}
+      </div>
+      {hasChildren && (
+        <>
+          <div
+            aria-hidden
+            className="mt-[14px] h-px w-10 shrink-0 bg-border-strong"
+          />
+          <div className="flex flex-col">
+            {data.children!.map((child, idx) => (
+              <Branch key={`${child.label}-${idx}`} data={child} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   )
 }
