@@ -4,6 +4,7 @@ import {
   Cpu,
   Layers,
   Megaphone,
+  Network,
   Radio,
   Scale,
   type LucideIcon,
@@ -16,12 +17,14 @@ import {
   PlanMindMap,
   RulesPriority,
   RulesPrioritySidebar,
+  WikiOverview,
+  WikiOverviewSidebar,
 } from './components'
 import { brandPlan } from './data/brand-plan'
 import { marketingPlan } from './data/marketing-plan'
 import type { EngineeringPlan } from './data/plan-types'
 
-type TabId = 'brand' | 'marketing' | 'portfolio' | 'rules'
+type TabId = 'brand' | 'marketing' | 'portfolio' | 'rules' | 'overview'
 
 type TabDef = {
   id: TabId
@@ -55,6 +58,12 @@ const tabs: TabDef[] = [
     engine: 'Rules Priority · 03',
     icon: Scale,
   },
+  {
+    id: 'overview',
+    label: 'UED 全景脑图',
+    engine: 'Wiki Atlas · Mindmap',
+    icon: Network,
+  },
 ]
 
 const plans: Record<'brand' | 'marketing', EngineeringPlan> = {
@@ -86,6 +95,12 @@ const tabHeading: Record<TabId, { kicker: string; title: string; subtitle: strin
     title: '规范权重决策表',
     subtitle: 'Rules Priority · rules-priority.md',
     desc: '三层规范 × 4 条仲裁原则 × 7 场景 × 6 维度 · AI 与审核统一消费',
+  },
+  overview: {
+    kicker: '全景脑图',
+    title: 'UED 设计中心 · 全景脑图',
+    subtitle: 'Wiki Atlas · C 端 + B 端 + 工程化 + 规范',
+    desc: 'C 端 7 个核心 App × B 端业务矩阵 × 双工程化引擎 × 全规范体系 · 一图见 UED 全貌',
   },
 }
 
@@ -133,7 +148,7 @@ function App() {
         <main className="min-w-0 flex-1">
           {/* Tab 切换 */}
           <div
-            className="panel-card mb-6 grid grid-cols-1 gap-1 p-1 sm:grid-cols-2 xl:grid-cols-4"
+            className="panel-card mb-6 grid grid-cols-1 gap-1 p-1 sm:grid-cols-2 xl:grid-cols-5"
             role="tablist"
             aria-label="工程化与规范视图切换"
           >
@@ -198,6 +213,7 @@ function App() {
             {activeTab === 'marketing' && <PlanMindMap plan={plans.marketing} />}
             {activeTab === 'portfolio' && <BrandPortfolio />}
             {activeTab === 'rules' && <RulesPriority />}
+            {activeTab === 'overview' && <WikiOverview />}
           </div>
         </main>
 
@@ -208,6 +224,7 @@ function App() {
             {activeTab === 'marketing' && <PipelineSidebar plan={plans.marketing} />}
             {activeTab === 'portfolio' && <BrandPortfolioSidebar />}
             {activeTab === 'rules' && <RulesPrioritySidebar />}
+            {activeTab === 'overview' && <WikiOverviewSidebar />}
           </div>
         </div>
       </div>
