@@ -1,7 +1,48 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-sans:
+    'Inter', 'Airbnb Cereal VF', Circular, ui-sans-serif, system-ui, -apple-system,
+    'Helvetica Neue', sans-serif;
+
+  /* ------------------------------------------------------------------
+   * Airbnb 语义 token —— 用于 Header / Tab 激活点位 / 新组件
+   * 取值来源：airbnb_style.md
+   * ------------------------------------------------------------------ */
+  --color-rausch: #ff385c;
+  --color-rausch-active: #e00b41;
+  --color-rausch-disabled: #ffd1da;
+
+  --color-ink: #222222;
+  --color-body-text: #3f3f3f;
+  --color-muted: #6a6a6a;
+  --color-muted-soft: #929292;
+
+  --color-canvas: #ffffff;
+  --color-surface-soft: #f7f7f7;
+  --color-surface-strong: #f2f2f2;
+
+  --color-hairline: #dddddd;
+  --color-hairline-soft: #ebebeb;
+  --color-border-strong: #c1c1c1;
+
+  --radius-card: 14px;
+
+  /* ------------------------------------------------------------------
+   * 全局色阶映射 —— 将原有的 cool slate 替换为 Airbnb warm 灰阶
+   * 这样既有组件无需改动 className，颜色基调即整体切换
+   * ------------------------------------------------------------------ */
+  --color-slate-50: #f7f7f7;   /* surface-soft */
+  --color-slate-100: #f2f2f2;  /* surface-strong */
+  --color-slate-200: #dddddd;  /* hairline */
+  --color-slate-300: #c1c1c1;  /* border-strong */
+  --color-slate-400: #929292;  /* muted-soft */
+  --color-slate-500: #6a6a6a;  /* muted */
+  --color-slate-600: #3f3f3f;  /* body */
+  --color-slate-700: #3f3f3f;  /* body */
+  --color-slate-800: #222222;  /* ink */
+  --color-slate-900: #222222;  /* ink */
+  --color-slate-950: #111111;
 }
 
 @layer base {
@@ -10,7 +51,10 @@
   }
 
   body {
-    @apply min-h-svh bg-slate-50 font-sans text-slate-900;
+    @apply min-h-svh font-sans;
+    background-color: var(--color-surface-soft);
+    color: var(--color-ink);
+    font-weight: 400;
   }
 
   #root {
@@ -20,11 +64,15 @@
 
 @layer utilities {
   .panel-card {
-    @apply rounded-xl border border-slate-200/60 bg-white shadow-sm;
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-card);
   }
 
   .section-rule {
-    @apply h-px flex-1 bg-slate-200;
+    height: 1px;
+    flex: 1;
+    background-color: var(--color-hairline-soft);
   }
 }
 

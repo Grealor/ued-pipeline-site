@@ -1,9 +1,9 @@
-/** Mermaid 工业级全链路闭环流水线（浅底主题） */
+/** Mermaid 工业级全链路闭环流水线（Airbnb 浅底主题） */
 
 export const brandPipelineMermaid = `flowchart TB
-  classDef stage fill:#ffffff,stroke:#cbd5e1,stroke-width:1px,color:#0f172a
-  classDef gate fill:#fffbeb,stroke:#d97706,stroke-width:1px,color:#78350f
-  classDef out fill:#f8fafc,stroke:#334155,stroke-width:1px,color:#0f172a
+  classDef stage fill:#ffffff,stroke:#dddddd,stroke-width:1px,color:#222222
+  classDef gate fill:#fff5f5,stroke:#ff385c,stroke-width:1px,color:#222222
+  classDef out fill:#f7f7f7,stroke:#222222,stroke-width:1px,color:#222222
 
   IN([品牌需求 / Prompt]):::stage
   L1[基础模型层<br/>LoRA · IP-Adapter · Negative]:::stage
@@ -17,9 +17,9 @@ export const brandPipelineMermaid = `flowchart TB
 `
 
 export const marketingPipelineMermaid = `flowchart TB
-  classDef stage fill:#ffffff,stroke:#cbd5e1,stroke-width:1px,color:#0f172a
-  classDef gate fill:#fffbeb,stroke:#d97706,stroke-width:1px,color:#78350f
-  classDef out fill:#f8fafc,stroke:#334155,stroke-width:1px,color:#0f172a
+  classDef stage fill:#ffffff,stroke:#dddddd,stroke-width:1px,color:#222222
+  classDef gate fill:#fff5f5,stroke:#ff385c,stroke-width:1px,color:#222222
+  classDef out fill:#f7f7f7,stroke:#222222,stroke-width:1px,color:#222222
 
   IN([营销需求 / 商品图]):::stage
   L1[资产处理层<br/>SAM 抠图 · IC-Light 重光照]:::stage

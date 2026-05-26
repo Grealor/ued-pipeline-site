@@ -1,3 +1,7 @@
 export { MermaidDiagram } from './MermaidDiagram'
 export { PlanMindMap } from './PlanMindMap'
 export { PipelineSidebar } from './PipelineSidebar'
+export { BrandPortfolio } from './BrandPortfolio'
+export { BrandPortfolioSidebar } from './BrandPortfolioSidebar'
+export { RulesPriority } from './RulesPriority'
+export { RulesPrioritySidebar } from './RulesPrioritySidebar'

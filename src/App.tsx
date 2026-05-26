@@ -1,25 +1,36 @@
 import {
-  Activity,
   Bot,
+  Boxes,
   Cpu,
   Layers,
   Megaphone,
   Radio,
+  Scale,
+  type LucideIcon,
 } from 'lucide-react'
 import { useState } from 'react'
-import { PlanMindMap, PipelineSidebar } from './components'
+import {
+  BrandPortfolio,
+  BrandPortfolioSidebar,
+  PipelineSidebar,
+  PlanMindMap,
+  RulesPriority,
+  RulesPrioritySidebar,
+} from './components'
 import { brandPlan } from './data/brand-plan'
 import { marketingPlan } from './data/marketing-plan'
 import type { EngineeringPlan } from './data/plan-types'
 
-type TabId = 'brand' | 'marketing'
+type TabId = 'brand' | 'marketing' | 'portfolio' | 'rules'
 
-const tabs: {
+type TabDef = {
   id: TabId
   label: string
   engine: string
-  icon: typeof Layers
-}[] = [
+  icon: LucideIcon
+}
+
+const tabs: TabDef[] = [
   {
     id: 'brand',
     label: '品牌设计工程化',
@@ -32,16 +43,55 @@ const tabs: {
     engine: 'Marketing Automation',
     icon: Megaphone,
   },
+  {
+    id: 'portfolio',
+    label: '品牌矩阵心智规范',
+    engine: 'Brand Portfolio · 1.6',
+    icon: Boxes,
+  },
+  {
+    id: 'rules',
+    label: '规范权重决策表',
+    engine: 'Rules Priority · 03',
+    icon: Scale,
+  },
 ]
 
-const plans: Record<TabId, EngineeringPlan> = {
+const plans: Record<'brand' | 'marketing', EngineeringPlan> = {
   brand: brandPlan,
   marketing: marketingPlan,
 }
 
+const tabHeading: Record<TabId, { kicker: string; title: string; subtitle: string; desc: string }> = {
+  brand: {
+    kicker: '执行脑图',
+    title: brandPlan.tabLabel,
+    subtitle: brandPlan.engineName,
+    desc: '纵向 Skill 解构 × 横向 Pipeline 落地 · 里程碑驱动交付',
+  },
+  marketing: {
+    kicker: '执行脑图',
+    title: marketingPlan.tabLabel,
+    subtitle: marketingPlan.engineName,
+    desc: '纵向 Skill 解构 × 横向 Pipeline 落地 · 里程碑驱动交付',
+  },
+  portfolio: {
+    kicker: '规范矩阵',
+    title: '品牌矩阵心智规范',
+    subtitle: 'Brand Portfolio · 1.6',
+    desc: '7 个子品牌 · 统一二级模板（定位 / 视觉 / IP / 关系 / 场景 / 资产）',
+  },
+  rules: {
+    kicker: '跨类仲裁',
+    title: '规范权重决策表',
+    subtitle: 'Rules Priority · rules-priority.md',
+    desc: '三层规范 × 4 条仲裁原则 × 7 场景 × 6 维度 · AI 与审核统一消费',
+  },
+}
+
 function App() {
   const [activeTab, setActiveTab] = useState<TabId>('brand')
-  const plan = plans[activeTab]
+  const heading = tabHeading[activeTab]
 
   return (
     <div className="min-h-svh bg-slate-50">
@@ -49,29 +99,29 @@ function App() {
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95">
         <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-slate-200 bg-slate-50">
-              <Cpu className="h-5 w-5 text-slate-800" aria-hidden />
+            <div className="flex h-11 w-11 items-center justify-center rounded-md bg-rausch">
+              <Cpu className="h-5 w-5 text-canvas" aria-hidden />
             </div>
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted">
                 UED · Design Engineering
               </p>
-              <h1 className="text-base font-semibold text-slate-900 sm:text-lg">
+              <h1 className="text-base font-semibold text-ink sm:text-lg">
                 品牌与营销设计AI工程化看板
               </h1>
             </div>
           </div>
 
           <div className="hidden items-center gap-8 sm:flex">
-            <div className="flex items-center gap-2 text-xs text-slate-600">
-              <Activity className="h-3.5 w-3.5 text-slate-800" aria-hidden />
+            <div className="flex items-center gap-2 text-xs text-muted">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-rausch" aria-hidden />
               <span>Pipeline</span>
-              <span className="font-mono font-medium text-slate-900">ACTIVE</span>
+              <span className="font-mono font-medium text-ink">ACTIVE</span>
             </div>
-            <div className="flex items-center gap-2 text-xs text-slate-600">
-              <Radio className="h-3.5 w-3.5 text-slate-800" aria-hidden />
-              <span>双引擎</span>
-              <span className="text-slate-500">Brand · Marketing</span>
+            <div className="flex items-center gap-2 text-xs text-muted">
+              <Radio className="h-3.5 w-3.5 text-ink" aria-hidden />
+              <span>四视图</span>
+              <span className="text-muted">Brand · Marketing · Portfolio · Rules</span>
             </div>
           </div>
         </div>
@@ -83,9 +133,9 @@ function App() {
         <main className="min-w-0 flex-1">
           {/* Tab 切换 */}
           <div
-            className="panel-card mb-6 flex flex-col gap-1 p-1 sm:flex-row"
+            className="panel-card mb-6 grid grid-cols-1 gap-1 p-1 sm:grid-cols-2 xl:grid-cols-4"
             role="tablist"
-            aria-label="工程化规划切换"
+            aria-label="工程化与规范视图切换"
           >
             {tabs.map((tab) => {
               const Icon = tab.icon
@@ -97,7 +147,7 @@ function App() {
                   role="tab"
                   aria-selected={active}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex flex-1 items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors ${
+                  className={`flex items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors ${
                     active
                       ? 'border border-slate-200 bg-slate-100'
                       : 'border border-transparent text-slate-600 hover:bg-slate-50'
@@ -128,32 +178,36 @@ function App() {
             })}
           </div>
 
-          {/* 脑图主内容区 */}
+          {/* 主内容区 */}
           <div className="panel-card rounded-2xl p-5 sm:p-6 lg:p-8">
             <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-slate-200 pb-6">
               <div>
                 <div className="mb-2 inline-flex items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-slate-600">
                   <Bot className="h-3 w-3 text-slate-800" aria-hidden />
-                  执行脑图
+                  {heading.kicker}
                 </div>
-                <h2 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-                  {plan.tabLabel}
+                <h2 className="text-xl font-semibold tracking-tight text-ink sm:text-2xl">
+                  {heading.title}
                 </h2>
-                <p className="mt-1 font-mono text-xs text-slate-600">{plan.engineName}</p>
+                <p className="mt-1 font-mono text-xs text-slate-600">{heading.subtitle}</p>
               </div>
-              <p className="max-w-md text-right text-xs text-slate-500">
-                纵向 Skill 解构 × 横向 Pipeline 落地 · 里程碑驱动交付
-              </p>
+              <p className="max-w-md text-right text-xs text-slate-500">{heading.desc}</p>
             </div>
 
-            <PlanMindMap plan={plan} />
+            {activeTab === 'brand' && <PlanMindMap plan={plans.brand} />}
+            {activeTab === 'marketing' && <PlanMindMap plan={plans.marketing} />}
+            {activeTab === 'portfolio' && <BrandPortfolio />}
+            {activeTab === 'rules' && <RulesPriority />}
           </div>
         </main>
 
-        {/* 右侧 Pipeline 侧边栏 */}
+        {/* 右侧侧边栏（按 Tab 切换） */}
         <div className="w-full shrink-0 lg:w-[380px] xl:w-[420px]">
           <div className="panel-card sticky top-24 max-h-[calc(100svh-7rem)] overflow-y-auto rounded-2xl p-5 sm:p-6">
-            <PipelineSidebar plan={plan} />
+            {activeTab === 'brand' && <PipelineSidebar plan={plans.brand} />}
+            {activeTab === 'marketing' && <PipelineSidebar plan={plans.marketing} />}
+            {activeTab === 'portfolio' && <BrandPortfolioSidebar />}
+            {activeTab === 'rules' && <RulesPrioritySidebar />}
           </div>
         </div>
       </div>
