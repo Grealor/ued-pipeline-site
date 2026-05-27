@@ -7,6 +7,7 @@ import {
   Network,
   Radio,
   Scale,
+  Wand2,
   type LucideIcon,
 } from 'lucide-react'
 import { useState } from 'react'
@@ -15,6 +16,8 @@ import {
   BrandPortfolioSidebar,
   PipelineSidebar,
   PlanMindMap,
+  PosterPipeline,
+  PosterPipelineSidebar,
   RulesPriority,
   RulesPrioritySidebar,
   WikiOverview,
@@ -24,7 +27,7 @@ import { brandPlan } from './data/brand-plan'
 import { marketingPlan } from './data/marketing-plan'
 import type { EngineeringPlan } from './data/plan-types'
 
-type TabId = 'brand' | 'marketing' | 'portfolio' | 'rules' | 'overview'
+type TabId = 'brand' | 'marketing' | 'portfolio' | 'rules' | 'poster' | 'overview'
 
 type TabDef = {
   id: TabId
@@ -57,6 +60,12 @@ const tabs: TabDef[] = [
     label: '规范权重决策表',
     engine: 'Rules Priority · 03',
     icon: Scale,
+  },
+  {
+    id: 'poster',
+    label: '海报 AI 管线',
+    engine: 'Poster Pipeline · Case',
+    icon: Wand2,
   },
   {
     id: 'overview',
@@ -95,6 +104,12 @@ const tabHeading: Record<TabId, { kicker: string; title: string; subtitle: strin
     title: '规范权重决策表',
     subtitle: 'Rules Priority · rules-priority.md',
     desc: '三层规范 × 4 条仲裁原则 × 7 场景 × 6 维度 · AI 与审核统一消费',
+  },
+  poster: {
+    kicker: '案例 · 实战',
+    title: '运营海报 AI 工程化管线',
+    subtitle: 'Brand Asset → Poster · 京东校招海报案例',
+    desc: '自然语言 Brief → 9 段 Spec → 8 阶段流水线 + 2 道防线 · 一次产出 N 张 × M 渠道',
   },
   overview: {
     kicker: '全景脑图',
@@ -148,7 +163,7 @@ function App() {
         <main className="min-w-0 flex-1">
           {/* Tab 切换 */}
           <div
-            className="panel-card mb-6 grid grid-cols-1 gap-1 p-1 sm:grid-cols-2 xl:grid-cols-5"
+            className="panel-card mb-6 grid grid-cols-1 gap-1 p-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6"
             role="tablist"
             aria-label="工程化与规范视图切换"
           >
@@ -213,6 +228,7 @@ function App() {
             {activeTab === 'marketing' && <PlanMindMap plan={plans.marketing} />}
             {activeTab === 'portfolio' && <BrandPortfolio />}
             {activeTab === 'rules' && <RulesPriority />}
+            {activeTab === 'poster' && <PosterPipeline />}
             {activeTab === 'overview' && <WikiOverview />}
           </div>
         </main>
@@ -224,6 +240,7 @@ function App() {
             {activeTab === 'marketing' && <PipelineSidebar plan={plans.marketing} />}
             {activeTab === 'portfolio' && <BrandPortfolioSidebar />}
             {activeTab === 'rules' && <RulesPrioritySidebar />}
+            {activeTab === 'poster' && <PosterPipelineSidebar />}
             {activeTab === 'overview' && <WikiOverviewSidebar />}
           </div>
         </div>
